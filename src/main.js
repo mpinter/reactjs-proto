@@ -17,15 +17,15 @@ let prevstate = {}
 
 class App extends React.Component {
   getInitialState() {
-    
+
   }
   getDefaultProps() {
-    
+
   }
   componentWillMount() {
     this.actions = actions('https://stage.skillandia.com/') // you'll need to allow CORS in your browser for this to work
   }
-  
+
   dispatch(msg, fn, args) {
     if (args == null) {
       args = []
@@ -35,16 +35,14 @@ class App extends React.Component {
     }
     if (dev_mode) {
       // check if anybody meddled with state outside dispatch
-      const printPrev = cloneDeep(prevstate)
-      const printCurrent = cloneDeep(appstate)
-      console.log(printPrev)
-      console.log(printCurrent)
       if (!isEqual(prevstate, appstate)) {
         // do another clone so that no further changes happen to printed-out objects
+        const printPrev = cloneDeep(prevstate)
+        const printCurrent = cloneDeep(appstate)
         console.error('State was changed between last two dispatches') // eslint-disable-line no-console
         console.error('Previous state:',printPrev) // eslint-disable-line no-console
         console.error('Current state:',printCurrent) // eslint-disable-line no-console
-      } 
+      }
     }
     console.log(`dispatching: ${msg}`) // eslint-disable-line no-console
     console.log('function:', fn) // eslint-disable-line no-console
