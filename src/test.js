@@ -14,6 +14,14 @@ export class Test extends React.Component {
       (state) => ({...setIn(state, ['daco','neviem',8], 47, true)}),
       []
     )
+    this.props.dispatch(
+      'bleeee',
+      (state) => {
+        state['daco']['viem'] = 7
+        return state
+      },
+      []
+    )
   }
 
 
