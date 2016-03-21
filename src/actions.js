@@ -64,6 +64,9 @@ export default function actions(url) {
     },
     examplePost(something) {
       return post(`${url}/${something}`) //returns promise
+    },
+    fetchLessons() { 
+      return fetch(`${url}/api/mobileapp-example`) // api endpoint available on skillandia api-example branch
     }
   }
 }

@@ -6,6 +6,7 @@ import {
   isEqual
 } from 'lodash'
 import actions from './actions'
+import {Test} from './test'
 
 const {Navigator} = React
 
@@ -22,7 +23,7 @@ class App extends React.Component {
     
   }
   componentWillMount() {
-    this.actions = actions('http://example.com')
+    this.actions = actions('https://stage.skillandia.com/') // you'll need to allow CORS in your browser for this to work
   }
   
   dispatch(msg, fn, args) {
@@ -34,15 +35,16 @@ class App extends React.Component {
     }
     if (dev_mode) {
       // check if anybody meddled with state outside dispatch
+      const printPrev = cloneDeep(prevstate)
+      const printCurrent = cloneDeep(appstate)
+      console.log(printPrev)
+      console.log(printCurrent)
       if (!isEqual(prevstate, appstate)) {
         // do another clone so that no further changes happen to printed-out objects
-        const printPrev = cloneDeep(prevstate)
-        const printCurrent = cloneDeep(appstate)
         console.error('State was changed between last two dispatches') // eslint-disable-line no-console
         console.error('Previous state:',printPrev) // eslint-disable-line no-console
         console.error('Current state:',printCurrent) // eslint-disable-line no-console
       } 
-      prevstate = cloneDeep(appstate)
     }
     console.log(`dispatching: ${msg}`) // eslint-disable-line no-console
     console.log('function:', fn) // eslint-disable-line no-console
@@ -50,6 +52,7 @@ class App extends React.Component {
     appstate = fn.apply(null, [appstate].concat(args))
     this.setState({})
     console.log('state after dispatch', appstate) // eslint-disable-line no-console
+    if (dev_mode) prevstate = cloneDeep(appstate)
   }
 
   render() {
@@ -61,7 +64,7 @@ class App extends React.Component {
     }
 
     return (
-      <div>Hello!</div>
+      <Test {...props} />
     )
   }
 }
